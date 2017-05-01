@@ -1,7 +1,7 @@
 name: ShaQiZhi
-version: 0.4
-author: [Soldier,Mr_daofeng]
-main: cc.madcraft.shanezhi.main
+version: 0.6
+author: Soldier
+main: cc.madcraft.shanezhi.Main
 commands:
    shaqizhi:
      description: none

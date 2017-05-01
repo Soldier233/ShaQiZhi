@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
-public class other
+public class Other
 {
 	public static Plugin p;
 	public static int reached,mpu,dt;
@@ -26,7 +26,7 @@ public class other
 	public static void init(Plugin pl)
 	{
 		p=pl;
-		Bukkit.getPluginManager().registerEvents(new events(),p);
+		Bukkit.getPluginManager().registerEvents(new Events(),p);
 		qxdlore.add("");
 		qxdlore.add(ChatColor.translateAlternateColorCodes('&', "&6&l&m                    "));
 		qxdlore.add(ChatColor.translateAlternateColorCodes('&', "&a&lÃû³Æ:  &b&lÇåĞÄµ¤"));

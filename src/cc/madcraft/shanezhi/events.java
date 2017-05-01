@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-public class events implements Listener
+public class Events implements Listener
 {
 	@EventHandler
 	public void OnInteract(PlayerInteractEvent e)
@@ -28,9 +28,9 @@ public class events implements Listener
 			ItemStack item=p.getItemInHand();
 			if(item.hasItemMeta()&&item.getItemMeta().hasLore())
 			{
-				if(item.getItemMeta().getLore().equals(other.qxdlore))
+				if(item.getItemMeta().getLore().equals(Other.qxdlore))
 				{
-					if(other.a.containsKey(p.getName()))
+					if(Other.a.containsKey(p.getName()))
 					{
 						if(item.getAmount()>1)
 						{
@@ -43,17 +43,17 @@ public class events implements Listener
 								p.setItemInHand(new ItemStack(Material.AIR));
 							}
 						}
-						int b=other.a.get(p.getName());
+						int b=Other.a.get(p.getName());
 						int c=0;
 						if(b==1)
 						{
-							other.a.remove(p.getName());
+							Other.a.remove(p.getName());
 							c=0;
 						}
 						else
 						{
-							other.a.remove(p.getName());
-							other.a.put(p.getName(), b-1);
+							Other.a.remove(p.getName());
+							Other.a.put(p.getName(), b-1);
 							c=b-1;
 						}
 						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b&l你成功使用了一个清心丹，杀气值减1!"));
@@ -72,7 +72,7 @@ public class events implements Listener
 					}
 				}
 				
-				if(item.getItemMeta().getLore().equals(other.jmllore))
+				if(item.getItemMeta().getLore().equals(Other.jmllore))
 				{
 					if(item.getAmount()>1)
 					{
@@ -96,9 +96,9 @@ public class events implements Listener
 	{
 		Player p=e.getPlayer();
 		String name=e.getPlayer().getName();
-		if(!other.sleeped.contains(name))
+		if(!Other.sleeped.contains(name))
 		{
-			other.sleeped.add(name);
+			Other.sleeped.add(name);
 		}
 		new BukkitRunnable()
 		{
@@ -106,20 +106,20 @@ public class events implements Listener
 			{
 				if(Bukkit.getOnlinePlayers().contains(p))
 				{
-					if(other.sleeped.contains(name))
+					if(Other.sleeped.contains(name))
 					{
-						int vau=Integer.valueOf(other.getvalue(name));
+						int vau=Integer.valueOf(Other.getvalue(name));
 						if(vau>=1)
 						{
 							int a=vau-1;
 							vau-=1;
 							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&2&l你小睡了一会儿，杀气也开始减少"));
 							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&l你现在的杀气值是:"+String.valueOf(vau)));
-							other.a.remove(name);
-							other.a.put(name, vau);
+							Other.a.remove(name);
+							Other.a.put(name, vau);
 							if(a==0)
 							{
-								other.a.remove(name);
+								Other.a.remove(name);
 								p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l你的杀气消失了"));
 								cancel();
 							}
@@ -135,58 +135,58 @@ public class events implements Listener
 					cancel();
 				}
 			}
-		}.runTaskTimer(other.p, 600L, 600L);
+		}.runTaskTimer(Other.p, 600L, 600L);
 	}
 	@EventHandler
 	public void OnSleepEnd(PlayerBedLeaveEvent e)
 	{
 		String name=e.getPlayer().getName();
-		other.sleeped.remove(name);
+		Other.sleeped.remove(name);
 	}
 	@EventHandler
 	public void OnDeath(EntityDeathEvent e)
 	{
 		String worldname=e.getEntity().getWorld().getName();
-		if(other.worlds.contains(worldname))
+		if(Other.worlds.contains(worldname))
 		{
 			if(e.getEntity().getType().equals(EntityType.PLAYER))
 			{
 				if(e.getEntity().getKiller()!=null)
 				{
 					Player killer=e.getEntity().getKiller();
-					if(!other.a.containsKey(killer.getName()))
+					if(!Other.a.containsKey(killer.getName()))
 					{
-						other.a.put(killer.getName(), 1);
+						Other.a.put(killer.getName(), 1);
 					}
 					else
 					{
-						int amount=other.a.get(killer.getName());
-						other.a.remove(killer.getName());
-						other.a.put(killer.getName(), amount+1);
+						int amount=Other.a.get(killer.getName());
+						Other.a.remove(killer.getName());
+						Other.a.put(killer.getName(), amount+1);
 					}
 					Player bk=(Player) e.getEntity();
-					if(other.a.containsKey(bk.getName()))
+					if(Other.a.containsKey(bk.getName()))
 					{
-						if(other.a.get(bk.getName())>=other.reached)
+						if(Other.a.get(bk.getName())>=Other.reached)
 						{
-							int va=other.a.get(bk.getName());
-							int d=va-other.reached;
-							int min=d*other.mpu+other.dt;
-							if(va==other.reached)
+							int va=Other.a.get(bk.getName());
+							int d=va-Other.reached;
+							int min=d*Other.mpu+Other.dt;
+							if(va==Other.reached)
 							{
-								bk.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&l你被杀死了！由于你的杀气值大于"+String.valueOf(other.reached)+"，所以你被暂时关进监狱"));
+								bk.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&l你被杀死了！由于你的杀气值大于"+String.valueOf(Other.reached)+"，所以你被暂时关进监狱"));
 								bk.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&l囚禁时间:&4&l"+String.valueOf(min)+"分钟"));
-								other.jail(bk,min);
+								Other.jail(bk,min);
 							}
 							else
 							{
-								bk.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&l你被杀死了！由于你的杀气值大于"+String.valueOf(other.reached)+"，所以你被暂时关进监狱"));
+								bk.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&l你被杀死了！由于你的杀气值大于"+String.valueOf(Other.reached)+"，所以你被暂时关进监狱"));
 								bk.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&l囚禁时间:&4&l"+String.valueOf(min)+"分钟"));
-								other.jail(bk,min);
+								Other.jail(bk,min);
 							}
 						}
 					}
-					killer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&l你杀死了一个玩家，你的杀气值上升，你目前的杀气值为")+String.valueOf(other.a.get(killer.getName())));
+					killer.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&l你杀死了一个玩家，你的杀气值上升，你目前的杀气值为")+String.valueOf(Other.a.get(killer.getName())));
 				}
 			}
 		}

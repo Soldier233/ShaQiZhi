@@ -13,7 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class main extends JavaPlugin
+public class Main extends JavaPlugin
 {
     public File conf=new File(getDataFolder(),"config.yml");
 	public FileConfiguration config=load(conf);
@@ -53,11 +53,7 @@ public class main extends JavaPlugin
 		if(!getDataFolder().exists())
 		{ 
 			getDataFolder().mkdir();
-			for(World w:Bukkit.getWorlds())
-			{
-				String name=w.getName();
-				config.set("Config.enable."+name, Boolean.valueOf(true));
-			}
+			config.set("Config.enable",new String[] {"world","example"});
 			config.set("Config.general.reached", 3);
 			config.set("Config.general.defaulttime",30);
 			config.set("Config.general.minsperup", 10);
@@ -69,39 +65,19 @@ public class main extends JavaPlugin
 			{
 				e.printStackTrace();
 			}
-			other.reached=config.getInt("Config.general.reached");
-			other.dt=config.getInt("Config.general.defaulttime");
-			other.mpu=config.getInt("Config.general.minsperup");
-			for(World w:Bukkit.getWorlds())
-			{
-				if(config.getBoolean("Config.enable."+w.getName()))
-				{
-					other.worlds.add(w.getName());
-				}
-			}
+			Other.reached=config.getInt("Config.general.reached");
+			Other.dt=config.getInt("Config.general.defaulttime");
+			Other.mpu=config.getInt("Config.general.minsperup");
+			Other.worlds=config.getStringList("Config.enable");
 		}
 		else
 		{
-			for(World w:Bukkit.getWorlds())
-			{
-				String name=w.getName();
-				if(!config.contains("Config.enable."+name))
-				{
-					config.set("Config.enable."+name, Boolean.valueOf(true));
-				}
-			}
-			other.reached=config.getInt("Config.general.reached");
-			other.dt=config.getInt("Config.general.defaulttime");
-			other.mpu=config.getInt("Config.general.minsperup");
-			for(World w:Bukkit.getWorlds())
-			{
-				if(config.getBoolean("Config.enable."+w.getName()))
-				{
-					other.worlds.add(w.getName());
-				}
-			}
+			Other.worlds=config.getStringList("Config.enable");
+			Other.reached=config.getInt("Config.general.reached");
+			Other.dt=config.getInt("Config.general.defaulttime");
+			Other.mpu=config.getInt("Config.general.minsperup");
 		}
-		other.init(this);
+		Other.init(this);
 		getLogger().info("杀气值插件加载成功");
 		getLogger().info("插件问题可以咨询QQ 1224954468");
 	}
@@ -126,7 +102,7 @@ public class main extends JavaPlugin
 							int am=Integer.valueOf(args[2]);
 							while(am>0)
 							{
-								bo.getInventory().addItem(other.qxd);
+								bo.getInventory().addItem(Other.qxd);
 								am-=1;
 							}
 						}
@@ -145,9 +121,9 @@ public class main extends JavaPlugin
 					if(args[0].equals("me"))
 					{
 						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&l&m    &6&l&m    &e&l&m    &2&l&m    &3&l&m    &b&l&m    &1&l&m    "));
-						sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&l你的杀气值:&6&l"+String.valueOf(other.getvalue(sender.getName()))));
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&l你的杀气值:&6&l"+String.valueOf(Other.getvalue(sender.getName()))));
 						sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&l可以使用清心丹降低杀气值"));
-						sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&l若杀气值大于"+other.reached+"，被人杀死会囚禁最少"+other.dt+"分钟"));
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&l若杀气值大于"+Other.reached+"，被人杀死会囚禁最少"+Other.dt+"分钟"));
 						sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&l杀气值越多，囚禁时间越长"));
 						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&l&m    &6&l&m    &e&l&m    &2&l&m    &3&l&m    &b&l&m    &1&l&m    "));
 					}
@@ -167,7 +143,7 @@ public class main extends JavaPlugin
 							int am=Integer.valueOf(args[2]);
 							while(am>0)
 							{
-								bo.getInventory().addItem(other.jml);
+								bo.getInventory().addItem(Other.jml);
 								am-=1;
 							}
 						}
